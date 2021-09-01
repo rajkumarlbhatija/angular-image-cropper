@@ -1,0 +1,64 @@
+<h1 class="text-center">Welcome to Image Drop and Crop Zone </h1>
+
+<hr>
+
+<div class="cropArea" (dragover)="allowDrop($event)">
+
+    <div class="fileUpload" *ngIf="saved">
+        <input type="file" class="upload" accept="image/*" (change)="fileChangeEvent($event)">
+        <p class="text-center m-5">{{upload_name}}</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-6" *ngIf="saved">
+
+            <div class="text-center">
+                <h5 *ngIf="isFileSelected">Crop your Image</h5>
+            </div>
+
+            <image-cropper [hidden]="!isFileSelected" [imageChangedEvent]="imageChangedEvent"
+                [imageBase64]="droppedImage" (imageCropped)="imageCropped($event)" [maintainAspectRatio]="true">
+            </image-cropper>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="text-center">
+                <h5 *ngIf="isFileSelected">Preview</h5>
+                <img [src]="croppedImage" />
+            </div>
+
+        </div>
+
+        <div class="col-md-4" *ngIf="!saved">
+
+            <div class="text-center">
+                <h5 *ngIf="!saved">Filename (Directives Ellipsis)</h5>
+                <p Ellipsis class='line-clamp'>{{upload_name}}</p>
+            </div>
+
+        </div>
+
+        <div class="col-md-4" *ngIf="!saved">
+
+            <div class="text-center">
+                <h5 *ngIf="!saved">Download (Pipes Ellipsis)</h5>
+                <a download="{{download_name}}" href="{{croppedImage}}">{{download_name | ellipsize:[20, '...']}}</a>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary m-5" (click)="back()">Back</button>
+            </div>
+        </div>
+
+        <div *ngIf="isFileSelected" class="col-md-2">
+            <button class="btn btn-primary m-5" (click)="save()" *ngIf="saved">Save</button>
+        </div>
+
+    </div>
+
+</div>
